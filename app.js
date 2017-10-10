@@ -7,7 +7,7 @@ var twilio = require('twilio');
 var oConnections = {};
 
 // Define the port to run on
-app.set('port', 5100);
+app.set('port', process.env.PORT || parseInt(process.argv.pop()) || 5100);
 
 // Define the Document Root path
 var sPath = path.join(__dirname, '.');
