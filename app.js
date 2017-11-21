@@ -26,7 +26,7 @@ function fPlay(req, res){
     oConnections[sFrom].fCurState = fStickOrHydrant;
   }else{
     twiml.message("Wow! I've never seen you do " + sAction + " before. Wait .... Over there is that a stick or a fire hydrant?")
-    oConnections[sFrom].fCurState = fStickOrHydrant;    
+    oConnections[sFrom].fCurState = fStickOrHydrant;
   }
   res.writeHead(200, {'Content-Type': 'text/xml'});
   res.end(twiml.toString());
@@ -44,23 +44,22 @@ function fStick(req, res){
     oConnections[sFrom].fCurState = fPlay;
   }else{
     twiml.message("Wow! I've never done " + sAction + " before. Wait .... Over there is that a stick or a fire hydrant?")
-    oConnections[sFrom].fCurState = fStickOrHydrant;    
+    oConnections[sFrom].fCurState = fStickOrHydrant;
   }
   res.writeHead(200, {'Content-Type': 'text/xml'});
   res.end(twiml.toString());
 }
 
-function fStickOrHydrant(req, res){
+function fHelp(req, res){
   var sFrom = req.body.From;
   var sAction = req.body.Body;
   var twiml = new twilio.twiml.MessagingResponse();
-  if(sAction.toLowerCase().search("stick") != -1){
-    twiml.message("I love sticks.... Should I eat it or take it to my person so he will throw it?");
-    oConnections[sFrom].fCurState = fStick;
-  }else if(sAction.toLowerCase().search("hydrant") != -1){  
-    twiml.message("Pee mail! How exciting. Wait .... Over there is that a stick or a fire hydrant?");
+  if(sAction.toLowerCase().search("yes") != -1){
+    twiml.message("Is this the first time that you've heard about us?");
+    oConnections[sFrom].fCurState = fDeclare;
   }else {
-    twiml.message("Wow! I've never seen " + sAction + " before. Wait .... Over there is that a stick or a fire hydrant?")
+    twiml.message("Thank you for your service! Have a great day!");
+    oConnections[sFrom].fCurState = fBeginning;
   }
   res.writeHead(200, {'Content-Type': 'text/xml'});
   res.end(twiml.toString());
@@ -68,9 +67,9 @@ function fStickOrHydrant(req, res){
 
 function fBeginning(req, res){
   var sFrom = req.body.From;
-  oConnections[sFrom].fCurState = fStickOrHydrant;
+  oConnections[sFrom].fCurState = fHelp;
   var twiml = new twilio.twiml.MessagingResponse();
-  twiml.message('Hi ... My name is Sheba. I am very enthusiastic about this game. Wait! Is that a stick or a fire hydrant?');
+  twiml.message('Hi ... My name is Jojo. Would you like me to help you something today?');
   res.writeHead(200, {'Content-Type': 'text/xml'});
   res.end(twiml.toString());
 
