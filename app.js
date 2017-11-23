@@ -15,16 +15,26 @@ var sPath = path.join(__dirname, '.');
 app.use(express.static(sPath));
 app.use(bodyParser.urlencoded({ extended: true }));
 
+function fEnd(req, res){
+  var sFrom = req.body.From;
+  oConnections[sFrom].fCurState = fHelp;
+  var twiml = new twilio.twiml.MessagingResponse();
+  twiml.message('Thank you for taking the time to chat with us. Have a great day :)');
+  res.writeHead(200, {'Content-Type': 'text/xml'});
+  res.end(twiml.toString());
+
+}
+
 function fBookConfirmation(req, res){
   var sFrom = req.body.From;
   var sAction = req.body.Body;
   var twiml = new twilio.twiml.MessagingResponse();
   if(sAction.toLowerCase().search("yes") != -1){
     oConnections[sFrom].fCurState = fSportsDeals;
-    twiml.message("Perfect. I will save your phone number and I will text you our gym availability :)");
+    twiml.message("Perfect. I will save your phone number and I will text you our gym availability.");
   }else if(sAction.toLowerCase().search("no") != -1){
     twiml.message("No worries. Is there anything else I can help you with today?");
-    oConnections[sFrom].fCurState = fBeginning;
+    oConnections[sFrom].fCurState = fEnd;
 
   }else{
     twiml.message("Sorry, wrong option. Try again!");
@@ -43,7 +53,7 @@ function fBook(req, res){
     twiml.message("Would you like me to give you a time to come in and book the gym?");
   }else if(sAction.toLowerCase().search("no") != -1){
     twiml.message("No worries. Is there anything else I can help you with today?");
-    oConnections[sFrom].fCurState = fBeginning;
+    oConnections[sFrom].fCurState = fEnd;
 
   }else{
     twiml.message("Sorry, wrong option. Try again!");
@@ -79,7 +89,7 @@ function fSportsDeals(req, res){
     twiml.message("Choose the sport that you'd like to know more!");
   }else if(sAction.toLowerCase().search("no") != -1){
     twiml.message("No worries. Is there anything else I can help you with today?");
-    oConnections[sFrom].fCurState = fBeginning;
+    oConnections[sFrom].fCurState = fEnd
 
   }else{
     twiml.message("Sorry, wrong option. Try again!");
@@ -110,7 +120,7 @@ function fInfo(req, res){
   var twiml = new twilio.twiml.MessagingResponse();
   if(sAction.toLowerCase().search("business hours") != -1){
     twiml.message("We are open from Mondays - Saturdays, 8 am - 6 pm. Type ok to continue.");
-    oConnections[sFrom].fCurState = fBeginning;
+    oConnections[sFrom].fCurState = fDeclareSports;
   }else if(sAction.toLowerCase().search("services") != -1){
     twiml.message("We provide recreational services such as volleyball and basketball. Type ok to continue");
     oConnections[sFrom].fCurState = fDeclareSports;
