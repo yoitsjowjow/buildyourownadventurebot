@@ -14,14 +14,29 @@ var sPath = path.join(__dirname, '.');
 
 app.use(express.static(sPath));
 app.use(bodyParser.urlencoded({ extended: true }));
-function fBook(req, res){
+
+function fBookConfirmation(req, res){
   var sFrom = req.body.From;
   var sAction = req.body.Body;
   var twiml = new twilio.twiml.MessagingResponse();
   if(sAction.toLowerCase().search("yes") != -1){
     oConnections[sFrom].fCurState = fSportsDeals;
-    twiml.message("Would you like me to give you a time to come in and book the gym?");
+    twiml.message("Perfect. I will save your phone number and I will text you our gym availability :)");
   }else{
+    twiml.message("No worries. Is there anything else I can help you with today?");
+    oConnections[sFrom].fCurState = fBeginning;
+
+  }
+  res.writeHead(200, {'Content-Type': 'text/xml'});
+  res.end(twiml.toString());
+function fBook(req, res){
+  var sFrom = req.body.From;
+  var sAction = req.body.Body;
+  var twiml = new twilio.twiml.MessagingResponse();
+  if(sAction.toLowerCase().search("yes") != -1){
+    oConnections[sFrom].fCurState = fBookConfirmation;
+    twiml.message("Would you like me to give you a time to come in and book the gym?");
+  }else if(sAction.toLowerCase().search("no") != -1) {
     twiml.message("Is there anything else I can help you with today?");
     oConnections[sFrom].fCurState = fBeginning;
 
@@ -36,7 +51,7 @@ function fChooseSport(req, res){
   if(sAction.toLowerCase().search("basketball") != -1){
     oConnections[sFrom].fCurState = fBook;
     twiml.message("You pay $5 on tuesdays for the whole time you're using the gym! Type yes if you like this deal!");
-  }else if(sAction.toLowerCase().search("vsolleyball") != -1){
+  }else if(sAction.toLowerCase().search("volleyball") != -1){
     twiml.message("You get to play for free everytime you come with at least 6 people! type yes if you like this deal!");
     oConnections[sFrom].fCurState = fBook;
   }else{
@@ -54,7 +69,7 @@ function fSportsDeals(req, res){
   if(sAction.toLowerCase().search("yes") != -1){
     oConnections[sFrom].fCurState = fChooseSport;
     twiml.message("Choose the sport that you'd like to know more!");
-  }else{
+  }else if(sAction.toLowerCase().search("no") != -1){
     twiml.message("Is there anything else that we can help you with?");
     oConnections[sFrom].fCurState = fBeginning;
   }
@@ -115,7 +130,7 @@ function fHelp(req, res){
   if(sAction.toLowerCase().search("yes") != -1){
     twiml.message("Is this the first time that you've heard about us?");
     oConnections[sFrom].fCurState = fDeclare;
-  }else {
+  }else if (sAction.toLowerCase().search("no") != -1){
     twiml.message("Thank you for your service! Have a great day!");
     oConnections[sFrom].fCurState = fBeginning;
   }
