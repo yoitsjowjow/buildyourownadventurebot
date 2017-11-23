@@ -36,7 +36,7 @@ function fBook(req, res){
   if(sAction.toLowerCase().search("yes") != -1){
     oConnections[sFrom].fCurState = fBookConfirmation;
     twiml.message("Would you like me to give you a time to come in and book the gym?");
-  }else if(sAction.toLowerCase().search("no") != -1) {
+  }if else(sAction.toLowerCase().search("no") != -1) {
     twiml.message("Is there anything else I can help you with today?");
     oConnections[sFrom].fCurState = fBeginning;
 
@@ -51,7 +51,7 @@ function fChooseSport(req, res){
   if(sAction.toLowerCase().search("basketball") != -1){
     oConnections[sFrom].fCurState = fBook;
     twiml.message("You pay $5 on tuesdays for the whole time you're using the gym! Type yes if you like this deal!");
-  }else if(sAction.toLowerCase().search("volleyball") != -1){
+  }if else(sAction.toLowerCase().search("volleyball") != -1){
     twiml.message("You get to play for free everytime you come with at least 6 people! type yes if you like this deal!");
     oConnections[sFrom].fCurState = fBook;
   }else{
@@ -69,7 +69,7 @@ function fSportsDeals(req, res){
   if(sAction.toLowerCase().search("yes") != -1){
     oConnections[sFrom].fCurState = fChooseSport;
     twiml.message("Choose the sport that you'd like to know more!");
-  }else if(sAction.toLowerCase().search("no") != -1){
+  }if else(sAction.toLowerCase().search("no") != -1){
     twiml.message("Is there anything else that we can help you with?");
     oConnections[sFrom].fCurState = fBeginning;
   }
@@ -130,7 +130,7 @@ function fHelp(req, res){
   if(sAction.toLowerCase().search("yes") != -1){
     twiml.message("Is this the first time that you've heard about us?");
     oConnections[sFrom].fCurState = fDeclare;
-  }else if (sAction.toLowerCase().search("no") != -1){
+  }if else(sAction.toLowerCase().search("no") != -1){
     twiml.message("Thank you for your service! Have a great day!");
     oConnections[sFrom].fCurState = fBeginning;
   }
