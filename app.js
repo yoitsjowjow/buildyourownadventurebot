@@ -22,8 +22,12 @@ function fBookConfirmation(req, res){
   if(sAction.toLowerCase().search("yes") != -1){
     oConnections[sFrom].fCurState = fSportsDeals;
     twiml.message("Perfect. I will save your phone number and I will text you our gym availability :)");
-  }else{
+  }else if(sAction.toLowerCase().search("no") != -1){
     twiml.message("No worries. Is there anything else I can help you with today?");
+    oConnections[sFrom].fCurState = fBeginning;
+
+  }else{
+    twiml.message("Sorry, wrong option. Try again!");
     oConnections[sFrom].fCurState = fBeginning;
 
   }
@@ -37,10 +41,13 @@ function fBook(req, res){
   if(sAction.toLowerCase().search("yes") != -1){
     oConnections[sFrom].fCurState = fBookConfirmation;
     twiml.message("Would you like me to give you a time to come in and book the gym?");
-  }else{
-    twiml.message("Is there anything else I can help you with today?");
+  }else if(sAction.toLowerCase().search("no") != -1){
+    twiml.message("No worries. Is there anything else I can help you with today?");
     oConnections[sFrom].fCurState = fBeginning;
 
+  }else{
+    twiml.message("Sorry, wrong option. Try again!");
+    oConnections[sFrom].fCurState = fBeginning;
   }
   res.writeHead(200, {'Content-Type': 'text/xml'});
   res.end(twiml.toString());
@@ -70,8 +77,12 @@ function fSportsDeals(req, res){
   if(sAction.toLowerCase().search("yes") != -1){
     oConnections[sFrom].fCurState = fChooseSport;
     twiml.message("Choose the sport that you'd like to know more!");
+  }else if(sAction.toLowerCase().search("no") != -1){
+    twiml.message("No worries. Is there anything else I can help you with today?");
+    oConnections[sFrom].fCurState = fBeginning;
+
   }else{
-    twiml.message("Is there anything else that we can help you with?");
+    twiml.message("Sorry, wrong option. Try again!");
     oConnections[sFrom].fCurState = fBeginning;
   }
   res.writeHead(200, {'Content-Type': 'text/xml'});
@@ -100,7 +111,7 @@ function fInfo(req, res){
   if(sAction.toLowerCase().search("business hours") != -1){
     twiml.message("We are open from Mondays - Saturdays, 8 am - 6 pm. Type ok to continue.");
     oConnections[sFrom].fCurState = fBeginning;
-  }else{
+  }else if(sAction.toLowerCase().search("services") != -1){
     twiml.message("We provide recreational services such as volleyball and basketball. Type ok to continue");
     oConnections[sFrom].fCurState = fDeclareSports;
   }
