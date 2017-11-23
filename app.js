@@ -33,10 +33,10 @@ function fChooseSport(req, res){
   var sFrom = req.body.From;
   var sAction = req.body.Body;
   var twiml = new twilio.twiml.MessagingResponse();
-  if(sAction.toLowerCase().search("Basketball") != -1){
+  if(sAction.toLowerCase().search("basketball") != -1){
     oConnections[sFrom].fCurState = fBook;
     twiml.message("You pay $5 on tuesdays for the whole time you're using the gym! Type yes if you like this deal!");
-  }else if(sAction.toLowerCase().search("Volleyball") != -1){
+  }else if(sAction.toLowerCase().search("vsolleyball") != -1){
     twiml.message("You get to play for free everytime you come with at least 6 people! type yes if you like this deal!");
     oConnections[sFrom].fCurState = fBook;
   }else{
@@ -66,7 +66,7 @@ function fDeclareSports(req, res){
   var sFrom = req.body.From;
   var sAction = req.body.Body;
   var twiml = new twilio.twiml.MessagingResponse();
-  if(sAction.toLowerCase().search("yes") != -1){
+  if(sAction.toLowerCase().search("ok") != -1){
     oConnections[sFrom].fCurState = fSportsDeals;
     twiml.message("Would you like to know our deals for each sport?");
   }else{
@@ -82,10 +82,10 @@ function fInfo(req, res){
   var sAction = req.body.Body;
   var twiml = new twilio.twiml.MessagingResponse();
   if(sAction.toLowerCase().search("business hours") != -1){
-    twiml.message("We are open from Mondays - Saturdays, 8 am - 6 pm");
+    twiml.message("We are open from Mondays - Saturdays, 8 am - 6 pm. Type ok to continue.");
     oConnections[sFrom].fCurState = fBeginning;
   }else{
-    twiml.message("We provide recreational services such as volleyball and basketball. Do you play any of these sports?");
+    twiml.message("We provide recreational services such as volleyball and basketball. Type ok to continue");
     oConnections[sFrom].fCurState = fDeclareSports;
   }
   res.writeHead(200, {'Content-Type': 'text/xml'});
