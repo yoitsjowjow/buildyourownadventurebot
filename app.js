@@ -38,7 +38,7 @@ function fBookConfirmation(req, res){
 
   }else{
     twiml.message("Sorry, wrong option. Try again!");
-    oConnections[sFrom].fCurState = fBeginning;
+    oConnections[sFrom].fCurState = fBook;
 
   }
   res.writeHead(200, {'Content-Type': 'text/xml'});
@@ -57,7 +57,7 @@ function fBook(req, res){
 
   }else{
     twiml.message("Sorry, wrong option. Try again!");
-    oConnections[sFrom].fCurState = fBeginning;
+    oConnections[sFrom].fCurState = fChooseSport;
   }
   res.writeHead(200, {'Content-Type': 'text/xml'});
   res.end(twiml.toString());
@@ -93,7 +93,7 @@ function fSportsDeals(req, res){
 
   }else{
     twiml.message("Sorry, wrong option. Try again!");
-    oConnections[sFrom].fCurState = fBeginning;
+    oConnections[sFrom].fCurState = fDeclareSports;
   }
   res.writeHead(200, {'Content-Type': 'text/xml'});
   res.end(twiml.toString());
@@ -154,7 +154,7 @@ function fHelp(req, res){
     oConnections[sFrom].fCurState = fDeclare;
   }else{
     twiml.message("Thank you for your service! Have a great day!");
-    oConnections[sFrom].fCurState = fBeginning;
+    oConnections[sFrom].fCurState = fEnd;
   }
   res.writeHead(200, {'Content-Type': 'text/xml'});
   res.end(twiml.toString());
