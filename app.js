@@ -51,7 +51,7 @@ function fChooseSport(req, res){
   if(sAction.toLowerCase().search("basketball") != -1){
     oConnections[sFrom].fCurState = fBook;
     twiml.message("You pay $5 on tuesdays for the whole time you're using the gym! Type yes if you like this deal!");
-  }else(sAction.toLowerCase().search("volleyball") != -1){
+  }else if(sAction.toLowerCase().search("volleyball") != -1){
     twiml.message("You get to play for free everytime you come with at least 6 people! type yes if you like this deal!");
     oConnections[sFrom].fCurState = fBook;
   }else{
