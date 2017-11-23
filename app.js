@@ -29,6 +29,7 @@ function fBookConfirmation(req, res){
   }
   res.writeHead(200, {'Content-Type': 'text/xml'});
   res.end(twiml.toString());
+}
 function fBook(req, res){
   var sFrom = req.body.From;
   var sAction = req.body.Body;
